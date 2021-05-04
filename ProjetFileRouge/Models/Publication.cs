@@ -18,12 +18,9 @@ namespace ProjetFileRouge.Models
         public int IdUtilisateur { get => idUtilisateur; set => idUtilisateur = value; }
         public int Actif { get => actif; set => actif = value; }
 
-        public Publication(int idCanal, int idUtilisateur, int actif)
+        public Publication()
         {
             DateCreation = DateTime.Now;
-            IdCanal = idCanal;
-            IdUtilisateur = idUtilisateur;
-            Actif = actif;
         }
     }
 }

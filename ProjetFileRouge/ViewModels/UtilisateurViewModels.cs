@@ -27,16 +27,22 @@ namespace ProjetFileRouge.ViewModels
                 RaisePropertyChanged("Avatar");
             } 
         }
-        public int Actif { get => Utilisateur.Actif; 
-            set { 
-                Utilisateur.Actif = value;
-                RaisePropertyChanged("Actif");
-            } 
+        public int Actif {
+            get
+            {
+                if (ActifIsOui)
+                    return 1;
+                else
+                    return 0; 
+            }
         }
-        public int Administrateur { get => Utilisateur.Administrateur; 
-            set {
-                Utilisateur.Administrateur = value;
-                RaisePropertyChanged("Administrateur");
+        public int Administrateur { 
+            get
+            {
+                if (AdministrateurIsOui)
+                    return 1;
+                else
+                    return 0;
             } 
         }
 
@@ -51,7 +57,7 @@ namespace ProjetFileRouge.ViewModels
                     RaisePropertyChanged("Pseudo");
                 }
                 else
-                    throw new Exception();
+                    MessageBox.Show("Le pseudonyme ne correspond pas aux critères", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -66,7 +72,7 @@ namespace ProjetFileRouge.ViewModels
                     RaisePropertyChanged("Prenom");
                 }
                 else
-                    throw new Exception();
+                    MessageBox.Show("Le prénom ne correspond pas aux critères", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public string Nom
@@ -80,7 +86,7 @@ namespace ProjetFileRouge.ViewModels
                     RaisePropertyChanged("Nom");
                 }
                 else
-                    throw new Exception();
+                    MessageBox.Show("Le nom ne correspond pas aux critères", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public string Email
@@ -93,7 +99,7 @@ namespace ProjetFileRouge.ViewModels
                     RaisePropertyChanged("Email"); 
                 }
                 else
-                    throw new Exception();
+                    MessageBox.Show("L'adresse e-mail ne correspond pas aux critères", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public string MotDePasse
@@ -107,11 +113,52 @@ namespace ProjetFileRouge.ViewModels
                     RaisePropertyChanged("MotDePasse");
                 }
                 else
-                    throw new Exception();
+                    MessageBox.Show("Le mot de passe ne correspond pas aux critères", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        public ObservableCollection<Utilisateur> Utilisateurs { get; set; }
+        public bool AdministrateurIsOui
+        {
+            get => Utilisateur.AdministrateurIsOui;
+            set
+            {
+                Utilisateur.AdministrateurIsOui = value;
+                RaisePropertyChanged("AdministrateurIsOui");
+            }
+        }
+
+        public bool AdministrateurIsNon
+        {
+            get => Utilisateur.AdministrateurIsNon;
+            set
+            {
+                Utilisateur.AdministrateurIsNon = value;
+                RaisePropertyChanged("AdministrateurIsNon");
+
+            }
+        }
+
+        public bool ActifIsOui
+        {
+            get => Utilisateur.ActifIsOui;
+            set
+            {
+                Utilisateur.ActifIsOui = value;
+                RaisePropertyChanged("ActifIsOui");
+            }
+        }
+
+        public bool ActifIsNon
+        {
+            get => Utilisateur.ActifIsNon;
+            set
+            {
+                Utilisateur.ActifIsNon = value;
+                RaisePropertyChanged("ActifIsNon");
+            }
+        }
+
+        public ObservableCollection<Utilisateur> ListUtilisateurs { get; set; }
 
         public Utilisateur Utilisateur { get => utilisateur; set 
             { 
@@ -119,6 +166,38 @@ namespace ProjetFileRouge.ViewModels
 
                 if (utilisateur != null)
                 {
+                    if (utilisateur.Administrateur == 1)
+                    {
+                        utilisateur.AdministrateurIsOui = true;
+                        RaisePropertyChanged("AdministrateurIsOui");
+                    }
+                    else if (utilisateur.Administrateur == 0)
+                    {
+                        utilisateur.AdministrateurIsNon = true;
+                        RaisePropertyChanged("AdministrateurIsNon");
+                    }
+                    else
+                    {
+                        utilisateur.AdministrateurIsOui = false;
+                        utilisateur.AdministrateurIsNon = false;
+                    }
+
+                    if (utilisateur.Actif == 1)
+                    {
+                        utilisateur.ActifIsOui = true;
+                        RaisePropertyChanged("ActifIsOui");
+                    }
+                    else if (utilisateur.Actif == 0)
+                    {
+                        utilisateur.ActifIsNon = true;
+                        RaisePropertyChanged("ActifIsNon");
+                    }
+                    else
+                    {
+                        utilisateur.ActifIsOui = false;
+                        utilisateur.ActifIsNon = false;
+                    }
+
                     RaisePropertyChanged("Pseudo");
                     RaisePropertyChanged("Nom");
                     RaisePropertyChanged("Prenom");
@@ -129,41 +208,83 @@ namespace ProjetFileRouge.ViewModels
             } 
         }
 
-        public ICommand ValidCommand { get; set; }
+        public ICommand ValidUtilisateur { get; set; }
+        public ICommand AnnulerUtilisateur { get; set; }
+        public ICommand SupprimerUtilisateur { get; set; }
 
         public string ContentButton { get => Utilisateur.Id > 0 ? "Modifier" : "Ajouter"; }
 
         public UtilisateurViewModels()
         {
             Utilisateur = new Utilisateur();
-            ValidCommand = new RelayCommand(ActionValidCommand);
-            Utilisateurs = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
+            ValidUtilisateur = new RelayCommand(ActionValidUtilisateur);
+            AnnulerUtilisateur = new RelayCommand(ActionAnnulerUtilisateur);
+            SupprimerUtilisateur = new RelayCommand(ActionSupprimerUtilisateur);
+            ListUtilisateurs = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
         }
 
-        public void ActionValidCommand()
+        public void ActionAnnulerUtilisateur()
+        {
+            Utilisateur = new Utilisateur();
+        }
+
+        public void ActionSupprimerUtilisateur()
         {
             if (Utilisateur.Id > 0)
             {
+                MessageBoxResult result = MessageBox.Show("Etes vous sur de vouloir supprimer cette utilisateur ?", "Suppression", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        Utilisateur.Administrateur = Administrateur;
+                        Utilisateur.Actif = Actif;
+                        if (Utilisateur.Delete())
+                        {
+                            MessageBox.Show("Utilisateur Supprimer");
+                            ListUtilisateurs = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
+                            RaisePropertyChanged("ListUtilisateurs");
+                            Utilisateur = new Utilisateur();
+                        }
+                        break;
+                    case MessageBoxResult.No:
+                        Utilisateur = new Utilisateur();
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Aucun Utilisateur selectionné", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void ActionValidUtilisateur()
+        {
+            if (Utilisateur.Id > 0)
+            {
+                Utilisateur.Administrateur = Administrateur;
+                Utilisateur.Actif = Actif;
                 if (Utilisateur.Update())
                 {
                     MessageBox.Show("Utilisateur mis à jour avec l'id " + Utilisateur.Id);
-                    Utilisateurs = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
-                    RaisePropertyChanged("Utilisateurs");
+                    ListUtilisateurs = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
+                    RaisePropertyChanged("ListUtilisateurs");
                     Utilisateur = new Utilisateur();
                 }
             }
             else
             {
+                Utilisateur.Administrateur = Administrateur;
+                Utilisateur.Actif = Actif;
                 if (Utilisateur.Add())
                 {
                     MessageBox.Show("Utilisateur ajouté avec l'id :" + Utilisateur.Id);
-                    Utilisateurs.Add(Utilisateur);
+                    ListUtilisateurs.Add(Utilisateur);
                     Utilisateur = new Utilisateur();
                 }
                 else
                 {
-                    MessageBox.Show("Erreur d'ajout");
+                    MessageBox.Show("Erreur d'ajout", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
