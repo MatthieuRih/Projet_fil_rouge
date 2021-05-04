@@ -21,14 +21,8 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <StackPanel Margin="10">
+                <StackPanel Margin="10" Width="200">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton GroupName="Titre" Content="Mr" IsChecked="{Binding IsMr}" Margin="0 0 10 0"></RadioButton>
-                            <RadioButton GroupName="Titre" Content="Mme" IsChecked="{Binding IsMme}" Margin="0 0 10 0"></RadioButton>
-                            <RadioButton GroupName="Titre" Content="Mlle" IsChecked="{Binding IsMlle}"></RadioButton>
-                        </StackPanel>
-
                         <Label Content="Nom"></Label>
                         <TextBox x:Name="Nom" Text="{Binding Nom}"></TextBox>
                     </StackPanel>
@@ -48,7 +42,7 @@
                 </StackPanel>
 
                 <StackPanel>
-                    <ListView ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="10" ItemsSource="{Binding Personnes}" SelectedItem="{Binding Personne}">
+                    <ListView ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="10" ItemsSource="{Binding Utilisateur}" SelectedItem="{Binding Utilisateur}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="40" Header="Titre" DisplayMemberBinding="{Binding Titre}"/>
