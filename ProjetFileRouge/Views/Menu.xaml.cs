@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjetFileRouge.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,7 @@ namespace ProjetFileRouge
         public Menu()
         {
             InitializeComponent();
+            DataContext = new UtilisateurViewModels();
         }
 
         private void About(object sender, RoutedEventArgs e)
