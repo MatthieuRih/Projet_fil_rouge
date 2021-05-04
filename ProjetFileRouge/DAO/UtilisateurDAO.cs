@@ -10,7 +10,7 @@ namespace ProjetFileRouge.DAO
     {
         public override bool Create(Utilisateur element)
         {
-            request = "INSERT INTO Utilisateur (pseudo, nom, prenom, email, mdp, dateCreation) OUTPUT INSERTED.ID VALUES (@pseudo, @nom, @prenom, @email, @mdp, @dateCreation)";
+            request = "INSERT INTO Utilisateur (pseudo, nom, prenom, email, mdp, DateCreation) OUTPUT INSERTED.ID VALUES (@pseudo, @nom, @prenom, @email, @mdp, @dateCreation)";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
             command.Parameters.Add(new SqlParameter("@pseudo", element.Pseudo));
@@ -59,7 +59,10 @@ namespace ProjetFileRouge.DAO
                     Prenom = reader.GetString(3),
                     Email = reader.GetString(4),
                     MotDePasse = reader.GetString(5),
-                    DateCreation = reader.GetDateTime(6)
+                    DateCreation = reader.GetDateTime(6),
+                    Avatar = reader.GetString(7),
+                    Actif = reader.GetInt32(8),
+                    Administrateur = reader.GetInt32(9)
                 };
                 personnes.Add(c);
             }
@@ -71,7 +74,7 @@ namespace ProjetFileRouge.DAO
 
         public override bool Update(Utilisateur element)
         {
-            request = "UPDATE PERSONNE set Pseudo = @pseudo, Nom = @nom, Prenom = @prenom, Email = @mdp, mdp = @telephone where id=@id";
+            request = "UPDATE Utilisateur set Pseudo = @pseudo, Nom = @nom, Prenom = @prenom, Email = @email, mdp = @mdp where id=@id";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
             command.Parameters.Add(new SqlParameter("@pseudo", element.Pseudo));
