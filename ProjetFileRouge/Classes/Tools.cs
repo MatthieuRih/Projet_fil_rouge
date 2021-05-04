@@ -10,6 +10,18 @@ namespace ProjetFileRouge.Classes
             return Regex.IsMatch(text, pathern);
         }
 
+        public static bool IsPseudo(string text)
+        {
+            string pathern = @"^[A-Za-z0-9]+$";
+            return Regex.IsMatch(text, pathern);
+        }
+
+        public static bool IsMdp(string text)
+        {
+            string pathern = @"^[A-Z][A-z-._]+[0-9]+$";
+            return Regex.IsMatch(text, pathern);
+        }
+
         public static bool IsTel(string tel)
         {
             string pathern = @"(^0([1-9]{1})|^\+33([1-9]{1}))(\.|\s|-)?((\d){2}(\.|\s|-)?){3}(\d{2})$";
