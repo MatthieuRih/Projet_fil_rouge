@@ -6,18 +6,19 @@ using System.Data.SqlClient;
 
 namespace ProjetFileRouge.DAO
 {
-    class PersonneDAO : AbstractDAO<Utilisateur>
+    class UtilisateurDAO : AbstractDAO<Utilisateur>
     {
         public override bool Create(Utilisateur element)
         {
-            request = "INSERT INTO PERSONNE (titre, nom, prenom, email, telephone) OUTPUT INSERTED.ID VALUES (@titre, @nom, @prenom, @email, @telephone)";
+            request = "INSERT INTO Utilisateur (pseudo, nom, prenom, email, mdp, dateCreation) OUTPUT INSERTED.ID VALUES (@pseudo, @nom, @prenom, @email, @mdp, @dateCreation)";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
-            command.Parameters.Add(new SqlParameter("@titre", element.Titre));
+            command.Parameters.Add(new SqlParameter("@pseudo", element.Pseudo));
             command.Parameters.Add(new SqlParameter("@nom", element.Nom));
             command.Parameters.Add(new SqlParameter("@prenom", element.Prenom));
             command.Parameters.Add(new SqlParameter("@email", element.Email));
-            command.Parameters.Add(new SqlParameter("@telephone", element.Telephone));
+            command.Parameters.Add(new SqlParameter("@mdp", element.MotDePasse));
+            command.Parameters.Add(new SqlParameter("@dateCreation", element.DateCreation));
             connection.Open();
             element.Id = (int)command.ExecuteScalar();
             command.Dispose();
@@ -43,7 +44,7 @@ namespace ProjetFileRouge.DAO
         public override List<Utilisateur> FindAll()
         {
             List<Utilisateur> personnes = new List<Utilisateur>();
-            request = "SELECT * FROM PERSONNE ORDER BY nom ASC";
+            request = "SELECT * FROM Utilisateur ORDER BY nom ASC";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
             connection.Open();
@@ -53,11 +54,12 @@ namespace ProjetFileRouge.DAO
                 Utilisateur c = new Utilisateur
                 {
                     Id = reader.GetInt32(0),
-                    Titre = reader.GetString(1),
+                    Pseudo = reader.GetString(1),
                     Nom = reader.GetString(2),
                     Prenom = reader.GetString(3),
                     Email = reader.GetString(4),
-                    Telephone = reader.GetString(5)
+                    MotDePasse = reader.GetString(5),
+                    DateCreation = reader.GetDateTime(6)
                 };
                 personnes.Add(c);
             }
@@ -69,14 +71,14 @@ namespace ProjetFileRouge.DAO
 
         public override bool Update(Utilisateur element)
         {
-            request = "UPDATE PERSONNE set Titre = @titre, Nom = @nom, Prenom = @prenom, Email = @email, Telephone = @telephone where id=@id";
+            request = "UPDATE PERSONNE set Pseudo = @pseudo, Nom = @nom, Prenom = @prenom, Email = @mdp, mdp = @telephone where id=@id";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
-            command.Parameters.Add(new SqlParameter("@titre", element.Titre));
+            command.Parameters.Add(new SqlParameter("@pseudo", element.Pseudo));
             command.Parameters.Add(new SqlParameter("@nom", element.Nom));
             command.Parameters.Add(new SqlParameter("@prenom", element.Prenom));
             command.Parameters.Add(new SqlParameter("@email", element.Email));
-            command.Parameters.Add(new SqlParameter("@telephone", element.Telephone));
+            command.Parameters.Add(new SqlParameter("@mdp", element.MotDePasse));
             command.Parameters.Add(new SqlParameter("@id", element.Id));
             connection.Open();
             int nbRow = command.ExecuteNonQuery();

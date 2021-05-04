@@ -28,31 +28,35 @@ namespace ProjetFileRouge.Models
             Actif = actif;
         }
 
+        public Utilisateur()
+        {
+        }
+
         public int Id { get => id; set => id = value; }
         public string Pseudo { get => pseudo; set => pseudo = value; }
         public string Prenom { get => prenom; set => prenom = value; }
         public string Nom { get => nom; set => nom = value; }
         public string Email { get => email; set => email = value; }
-        public Timestamp DateCreation { get => dateCreation; set => dateCreation = value; }
+        public DateTime DateCreation { get => dateCreation; set => dateCreation = value; }
         public string MotDePasse { get => motDePasse; set => motDePasse = value; }
         public string Avatar { get => avatar; set => avatar = value; }
         public int Actif { get => actif; set => actif = value; }
 
         public bool Add()
         {
-            AbstractDAO<Utilisateur> dao = new PersonneDAO();
+            AbstractDAO<Utilisateur> dao = new UtilisateurDAO();
             return dao.Create(this);
         }
 
         public bool Update()
         {
-            AbstractDAO<Utilisateur> dao = new PersonneDAO();
+            AbstractDAO<Utilisateur> dao = new UtilisateurDAO();
             return dao.Update(this);
         }
 
         public static List<Utilisateur> GetAll()
         {
-            AbstractDAO<Utilisateur> dao = new PersonneDAO();
+            AbstractDAO<Utilisateur> dao = new UtilisateurDAO();
             return dao.FindAll();
         }
     }
