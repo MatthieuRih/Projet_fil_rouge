@@ -14,7 +14,12 @@ namespace ProjetFileRouge.Models
         private DateTime dateCreation;
         private string motDePasse;
         private string avatar;
-        private int actif; private int administrateur;
+        private int actif; 
+        private int administrateur;
+        private bool administrateurIsOui;
+        private bool administrateurIsNon;
+        private bool actifIsOui;
+        private bool actifIsNon;
 
         public Utilisateur()
         {
@@ -31,6 +36,10 @@ namespace ProjetFileRouge.Models
         public string Avatar { get => avatar; set => avatar = value; }
         public int Actif { get => actif; set => actif = value; }
         public int Administrateur { get => administrateur; set => administrateur = value; }
+        public bool AdministrateurIsOui { get => administrateurIsOui; set => administrateurIsOui = value; }
+        public bool AdministrateurIsNon { get => administrateurIsNon; set => administrateurIsNon = value; }
+        public bool ActifIsOui { get => actifIsOui; set => actifIsOui = value; }
+        public bool ActifIsNon { get => actifIsNon; set => actifIsNon = value; }
 
         public bool Add()
         {
@@ -42,6 +51,11 @@ namespace ProjetFileRouge.Models
         {
             AbstractDAO<Utilisateur> dao = new UtilisateurDAO();
             return dao.Update(this);
+        }
+        public bool Delete()
+        {
+            AbstractDAO<Utilisateur> dao = new UtilisateurDAO();
+            return dao.Delete(this);
         }
 
         public static List<Utilisateur> GetAll()

@@ -10,7 +10,7 @@ namespace ProjetFileRouge.DAO
     {
         public override bool Create(Utilisateur element)
         {
-            request = "INSERT INTO Utilisateur (pseudo, nom, prenom, email, mdp, DateCreation) OUTPUT INSERTED.ID VALUES (@pseudo, @nom, @prenom, @email, @mdp, @dateCreation)";
+            request = "INSERT INTO Utilisateur (pseudo, nom, prenom, email, mdp, DateCreation, actif, admin) OUTPUT INSERTED.ID VALUES (@pseudo, @nom, @prenom, @email, @mdp, @dateCreation, @actif, @administrateur)";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
             command.Parameters.Add(new SqlParameter("@pseudo", element.Pseudo));
@@ -19,16 +19,13 @@ namespace ProjetFileRouge.DAO
             command.Parameters.Add(new SqlParameter("@email", element.Email));
             command.Parameters.Add(new SqlParameter("@mdp", element.MotDePasse));
             command.Parameters.Add(new SqlParameter("@dateCreation", element.DateCreation));
+            command.Parameters.Add(new SqlParameter("@actif", element.Actif));
+            command.Parameters.Add(new SqlParameter("@administrateur", element.Administrateur));
             connection.Open();
             element.Id = (int)command.ExecuteScalar();
             command.Dispose();
             connection.Close();
             return element.Id > 0;
-        }
-
-        public override bool Delete(Utilisateur element)
-        {
-            throw new NotImplementedException();
         }
 
         public override Utilisateur Find(int index)
@@ -74,7 +71,7 @@ namespace ProjetFileRouge.DAO
 
         public override bool Update(Utilisateur element)
         {
-            request = "UPDATE Utilisateur set Pseudo = @pseudo, Nom = @nom, Prenom = @prenom, Email = @email, mdp = @mdp where id=@id";
+            request = "UPDATE Utilisateur set Pseudo = @pseudo, Nom = @nom, Prenom = @prenom, Email = @email, mdp = @mdp, admin = @administrateur, actif = @actif where id=@id";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
             command.Parameters.Add(new SqlParameter("@pseudo", element.Pseudo));
@@ -82,6 +79,21 @@ namespace ProjetFileRouge.DAO
             command.Parameters.Add(new SqlParameter("@prenom", element.Prenom));
             command.Parameters.Add(new SqlParameter("@email", element.Email));
             command.Parameters.Add(new SqlParameter("@mdp", element.MotDePasse));
+            command.Parameters.Add(new SqlParameter("@actif", element.Actif));
+            command.Parameters.Add(new SqlParameter("@administrateur", element.Administrateur));
+            command.Parameters.Add(new SqlParameter("@id", element.Id));
+            connection.Open();
+            int nbRow = command.ExecuteNonQuery();
+            command.Dispose();
+            connection.Close();
+            return nbRow == 1;
+        }
+
+        public override bool Delete(Utilisateur element)
+        {
+            request = "DELETE FROM Utilisateur WHERE id=@id";
+            connection = Bdd.Cnx;
+            command = new SqlCommand(request, connection);
             command.Parameters.Add(new SqlParameter("@id", element.Id));
             connection.Open();
             int nbRow = command.ExecuteNonQuery();

@@ -26,7 +26,7 @@ namespace ProjetFileRouge
 
         private void About(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Logiciel développer par Michael Helinckx, Serge Buasa et Matthieu Rith ©2021", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Logiciel développé par Michael Helinckx, Serge Buasa et Matthieu Rith ©2021", "About", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Quitter(object sender, RoutedEventArgs e)
