@@ -11,7 +11,7 @@ namespace ProjetFileRouge.ViewModels
 {
     class PersonneViewModels : ViewModelBase
     {
-        private Personne personne;
+        private Utilisateur personne;
         private string contentButton;
         public int Id { get => Personne.Id; set => Personne.Id = value; }
 
@@ -116,9 +116,9 @@ namespace ProjetFileRouge.ViewModels
             }
         }
 
-        public ObservableCollection<Personne> Personnes { get; set; }
+        public ObservableCollection<Utilisateur> Personnes { get; set; }
 
-        public Personne Personne { get => personne; set 
+        public Utilisateur Personne { get => personne; set 
             { 
                 personne = value;
 
@@ -161,9 +161,9 @@ namespace ProjetFileRouge.ViewModels
 
         public PersonneViewModels()
         {
-            Personne = new Personne();
+            Personne = new Utilisateur();
             ValidCommand = new RelayCommand(ActionValidCommand);
-            Personnes = new ObservableCollection<Personne>(Personne.GetAll());
+            Personnes = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
         }
 
         public void ActionValidCommand()
@@ -175,9 +175,9 @@ namespace ProjetFileRouge.ViewModels
                 if (Personne.Update())
                 {
                     MessageBox.Show("Contact mis à jour avec l'id " + Personne.Id);
-                    Personnes = new ObservableCollection<Personne>(Personne.GetAll());
+                    Personnes = new ObservableCollection<Utilisateur>(Utilisateur.GetAll());
                     RaisePropertyChanged("Personnes");
-                    Personne = new Personne();
+                    Personne = new Utilisateur();
                 }
             }
             else
@@ -187,7 +187,7 @@ namespace ProjetFileRouge.ViewModels
                 {
                     MessageBox.Show("Contact ajouté avec l'id :" + Personne.Id);
                     Personnes.Add(Personne);
-                    Personne = new Personne();
+                    Personne = new Utilisateur();
                 }
                 else
                 {

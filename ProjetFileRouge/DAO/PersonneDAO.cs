@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 
 namespace ProjetFileRouge.DAO
 {
-    class PersonneDAO : AbstractDAO<Personne>
+    class PersonneDAO : AbstractDAO<Utilisateur>
     {
-        public override bool Create(Personne element)
+        public override bool Create(Utilisateur element)
         {
             request = "INSERT INTO PERSONNE (titre, nom, prenom, email, telephone) OUTPUT INSERTED.ID VALUES (@titre, @nom, @prenom, @email, @telephone)";
             connection = Bdd.Cnx;
@@ -25,24 +25,24 @@ namespace ProjetFileRouge.DAO
             return element.Id > 0;
         }
 
-        public override bool Delete(Personne element)
+        public override bool Delete(Utilisateur element)
         {
             throw new NotImplementedException();
         }
 
-        public override Personne Find(int index)
+        public override Utilisateur Find(int index)
         {
             throw new NotImplementedException();
         }
 
-        public override List<Personne> Find(Func<Personne, bool> criteria)
+        public override List<Utilisateur> Find(Func<Utilisateur, bool> criteria)
         {
             throw new NotImplementedException();
         }
 
-        public override List<Personne> FindAll()
+        public override List<Utilisateur> FindAll()
         {
-            List<Personne> personnes = new List<Personne>();
+            List<Utilisateur> personnes = new List<Utilisateur>();
             request = "SELECT * FROM PERSONNE ORDER BY nom ASC";
             connection = Bdd.Cnx;
             command = new SqlCommand(request, connection);
@@ -50,7 +50,7 @@ namespace ProjetFileRouge.DAO
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Personne c = new Personne
+                Utilisateur c = new Utilisateur
                 {
                     Id = reader.GetInt32(0),
                     Titre = reader.GetString(1),
@@ -67,7 +67,7 @@ namespace ProjetFileRouge.DAO
             return personnes;
         }
 
-        public override bool Update(Personne element)
+        public override bool Update(Utilisateur element)
         {
             request = "UPDATE PERSONNE set Titre = @titre, Nom = @nom, Prenom = @prenom, Email = @email, Telephone = @telephone where id=@id";
             connection = Bdd.Cnx;

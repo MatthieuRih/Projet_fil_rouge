@@ -1,0 +1,8 @@
+﻿##création d'une base
+sqllocalDB c ProjetFileRouge
+
+##Demarrage de la base
+sqllocalDB s ProjetFileRouge
+
+##Ajout de la base à VisualStudio
+(localdb)\ProjetFileRouge
