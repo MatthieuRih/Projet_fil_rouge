@@ -14,22 +14,11 @@ namespace ProjetFileRouge.Models
         private DateTime dateCreation;
         private string motDePasse;
         private string avatar;
-        private int actif;
-
-        public Utilisateur(string pseudo, string prenom, string nom, string email, string motDePasse, string avatar, int actif)
-        {
-            Pseudo = pseudo;
-            Prenom = prenom;
-            Nom = nom;
-            Email = email;
-            DateCreation = DateTime.Now;
-            MotDePasse = motDePasse;
-            Avatar = avatar;
-            Actif = actif;
-        }
+        private int actif; private int administrateur;
 
         public Utilisateur()
         {
+            DateCreation = DateTime.Now;
         }
 
         public int Id { get => id; set => id = value; }
@@ -41,6 +30,7 @@ namespace ProjetFileRouge.Models
         public string MotDePasse { get => motDePasse; set => motDePasse = value; }
         public string Avatar { get => avatar; set => avatar = value; }
         public int Actif { get => actif; set => actif = value; }
+        public int Administrateur { get => administrateur; set => administrateur = value; }
 
         public bool Add()
         {

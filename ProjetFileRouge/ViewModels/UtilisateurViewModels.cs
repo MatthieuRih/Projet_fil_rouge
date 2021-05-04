@@ -15,12 +15,37 @@ namespace ProjetFileRouge.ViewModels
         private string contentButton;
         public int Id { get => Utilisateur.Id; set => Utilisateur.Id = value; }
 
+        public DateTime DateCreation { get => Utilisateur.DateCreation; 
+            set { 
+                Utilisateur.DateCreation = value;
+                RaisePropertyChanged("DateCreation");
+            }
+        }
+        public string Avatar { get => Utilisateur.Avatar; 
+            set { 
+                Utilisateur.Avatar = value;
+                RaisePropertyChanged("Avatar");
+            } 
+        }
+        public int Actif { get => Utilisateur.Actif; 
+            set { 
+                Utilisateur.Actif = value;
+                RaisePropertyChanged("Actif");
+            } 
+        }
+        public int Administrateur { get => Utilisateur.Administrateur; 
+            set {
+                Utilisateur.Administrateur = value;
+                RaisePropertyChanged("Administrateur");
+            } 
+        }
+
         public string Pseudo
         {
             get => Utilisateur.Pseudo;
             set
             {
-                if (Tools.IsText(value))
+                if (Tools.IsPseudo(value))
                 {
                     Utilisateur.Pseudo = value;
                     RaisePropertyChanged("Pseudo");
@@ -71,6 +96,20 @@ namespace ProjetFileRouge.ViewModels
                     throw new Exception();
             }
         }
+        public string MotDePasse
+        {
+            get => Utilisateur.MotDePasse;
+            set
+            {
+                if (Tools.IsMdp(value))
+                {
+                    Utilisateur.MotDePasse = value;
+                    RaisePropertyChanged("MotDePasse");
+                }
+                else
+                    throw new Exception();
+            }
+        }
 
         public ObservableCollection<Utilisateur> Utilisateurs { get; set; }
 
@@ -84,6 +123,7 @@ namespace ProjetFileRouge.ViewModels
                     RaisePropertyChanged("Nom");
                     RaisePropertyChanged("Prenom");
                     RaisePropertyChanged("Email");
+                    RaisePropertyChanged("MotDePasse");
                     RaisePropertyChanged("ContentButton");
                 }
             } 
